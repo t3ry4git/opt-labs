@@ -9,7 +9,7 @@
 
 #define WIN
 
-Params params = {NULL, "output", false, true, true, true, NULL};
+Params params = {NULL, "output", false, true, true, NULL};
 
 void check_file_access(char *_file, bool inputFile) {
   if (access(_file, F_OK) == -1) {
@@ -57,18 +57,14 @@ void proc_cli(int argc, char *argv[]) {
         params.out_syntax = false;
       else if (strcmp(argv[i], "-offlexer") == 0)
         params.out_lexer = false;
-      else if (strcmp(argv[i], "-offcodegen") == 0)
-        params.out_codegen = false;
       else if (strcmp(argv[i], "-v") == 0 && i + 1 < argc)
         params._verify_file = argv[++i];
     }
   }
 
   if (params._input_file == NULL) {
-    char v[200];
-    snprintf(v,200,"Input filename %s is inaccessible.",params._input_file);
     add_to_errors(create_error_without_linecolumn(
-        FILE_ACCESS, v, true));
+        FILE_ACCESS, "Input filename is empty.", true));
   } else {
     check_file_access(params._input_file, true);
     check_file_access(params._output_file, false);
